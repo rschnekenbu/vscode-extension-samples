@@ -13,10 +13,12 @@ class NoteComment implements vscode.Comment {
 		public mode: vscode.CommentMode,
 		public author: vscode.CommentAuthorInformation,
 		public parent?: vscode.CommentThread,
-		public contextValue?: string
+		public contextValue?: string,
+		public timeStamp?: Date
 	) {
 		this.id = ++commentId;
 		this.savedBody = this.body;
+		this.timeStamp = new Date();
 	}
 }
 
