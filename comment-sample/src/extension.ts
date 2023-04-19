@@ -34,11 +34,21 @@ export function activate(context: vscode.ExtensionContext) {
 	};
 
 	context.subscriptions.push(vscode.commands.registerCommand('mywiki.createNote', (reply: vscode.CommentReply) => {
+		console.log('reply by create');
 		replyNote(reply);
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('mywiki.replyNote', (reply: vscode.CommentReply) => {
+		console.log('reply by reply');
 		replyNote(reply);
+	}));
+
+	context.subscriptions.push(vscode.commands.registerCommand('mywiki.toggleResolve', (reply: vscode.CommentReply) => {
+		console.log('reply by toggle before toggle: '+reply.thread.state );
+		toggleResolve(reply);
+		console.log('resolve toggled: '+reply.thread.state);
+		replyNote(reply);
+		console.log('resolve toggled after reply note: '+reply.thread);
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('mywiki.startDraft', (reply: vscode.CommentReply) => {
@@ -134,11 +144,28 @@ export function activate(context: vscode.ExtensionContext) {
 
 	function replyNote(reply: vscode.CommentReply) {
 		const thread = reply.thread;
-		const newComment = new NoteComment(reply.text, vscode.CommentMode.Preview, { name: 'vscode' }, thread, thread.comments.length ? 'canDelete' : undefined);
+		const newComment = new NoteComment(reply.text, vscode.CommentMode.Preview, { name: 'vscode' }, reply.thread, undefined);
 		if (thread.contextValue === 'draft') {
 			newComment.label = 'pending';
 		}
-
-		thread.comments = [...thread.comments, newComment];
+		if(!thread.comments) {
+			console.log('Not an array :'+ newComment);
+			thread.comments = Array.of(newComment);
+		} else {
+			thread.comments = [...thread.comments, newComment];
+		}
+		console.log(thread.comments);
 	}
 }
+function toggleResolve(reply: vscode.CommentReply) {
+	const thread = reply.thread;
+	if(!thread.state) {
+		thread.state = vscode.CommentThreadState.Unresolved;
+	}
+	if(thread.state === vscode.CommentThreadState.Unresolved) {
+		thread.state = vscode.CommentThreadState.Resolved;
+	} else {
+		thread.state = vscode.CommentThreadState.Unresolved;
+	}
+}
+

@@ -1,9 +1,9 @@
 {
 	"name": "vscode-comment-api-example",
-	"displayName": "Comment API Sample",
-	"description": "Comment API Sample",
+	"displayName": "Forked Comment API Sample v0.0.1",
+	"description": "Forked Comment API Sample v0.0.1",
 	"version": "0.0.1",
-	"publisher": "vscode-samples",
+	"publisher": "rschnekenbu",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -24,13 +24,14 @@
 		"commands": [
 			{
 				"command": "mywiki.createNote",
-				"title": "Create Note",
-				"enablement": "!commentIsEmpty"
+				"title": "Create Note"
 			},
 			{
 				"command": "mywiki.replyNote",
-				"title": "Reply",
-				"enablement": "!commentIsEmpty"
+				"title": "Reply"
+			},{
+				"command": "mywiki.toggleResolve",
+				"title": "Toggle Resolve"
 			},
 			{
 				"command": "mywiki.editNote",
@@ -83,6 +84,9 @@
 				{
 					"command": "mywiki.createNote",
 					"when": "false"
+				},{
+					"command": "mywiki.toggleResolve",
+					"when": "false"
 				},
 				{
 					"command": "mywiki.replyNote",
@@ -95,59 +99,48 @@
 				{
 					"command": "mywiki.deleteNoteComment",
 					"when": "false"
-				}
-			],
-			"comments/commentThread/title": [
-				{
-					"command": "mywiki.deleteNote",
-					"group": "navigation",
-					"when": "commentController == comment-sample && !commentThreadIsEmpty"
 				}
 			],
 			"comments/commentThread/context": [
 				{
 					"command": "mywiki.createNote",
-					"group": "inline",
-					"when": "commentController == comment-sample && commentThreadIsEmpty"
+					"group": "inline"
+				},{
+					"command": "mywiki.toggleResolve",
+					"group": "inline"
 				},
 				{
 					"command": "mywiki.replyNote",
-					"group": "inline",
-					"when": "commentController == comment-sample && !commentThreadIsEmpty"
+					"group": "inline"
 				},
 				{
 					"command": "mywiki.startDraft",
-					"group": "inline",
-					"when": "commentController == comment-sample && commentThreadIsEmpty"
+					"group": "inline"
 				},
 				{
-					"command": "mywiki.finishDraft",
-					"group": "inline",
-					"when": "commentController == comment-sample && commentThread == draft"
+					"command": "mywiki.finishDraft"
 				}
 			],
 			"comments/comment/title": [
 				{
-					"command": "mywiki.editNote",
-					"group": "group@1",
-					"when": "commentController == comment-sample"
-				},
-				{
-					"command": "mywiki.deleteNoteComment",
-					"group": "group@2",
-					"when": "commentController == comment-sample && comment == canDelete"
+					"command": "mywiki.createNote",
+					"group": "group@1"
+				
+				},{
+					"command": "mywiki.toggleResolve",
+					"group": "group@2"
+				
 				}
 			],
 			"comments/comment/context": [
 				{
-					"command": "mywiki.cancelsaveNote",
-					"group": "inline@1",
-					"when": "commentController == comment-sample"
-				},
-				{
-					"command": "mywiki.saveNote",
-					"group": "inline@2",
-					"when": "commentController == comment-sample"
+					"command": "mywiki.createNote",
+					"group": "inline@1"
+				
+				},{
+					"command": "mywiki.toggleResolve",
+					"group": "inline@2"
+				
 				}
 			]
 		}
